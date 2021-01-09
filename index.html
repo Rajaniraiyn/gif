@@ -150,7 +150,7 @@
                 fontColor: '#ffffff',
                 textAlign: 'center',
                 textBaseline: 'bottom',
-                sampleInterval: 10,
+                sampleInterval: 15,
                 numWorkers: 2
             }, function (obj) {
                 if (!obj.error) {
@@ -160,6 +160,7 @@
                     fetch(obj.image)
                         .then(res => res.blob())
                         .then(blob => {
+                            overlay.style = "top:0rem;"
                             document.querySelector('b').innerHTML = '<a id="save" href=' + window.URL.createObjectURL(blob) + '>save</a> / <a href="#" onclick="location.reload()">New</a>'
                             var save = document.querySelector('#save');
                             save.target = "_blank";
