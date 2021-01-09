@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Gif Yourselves | By Rajaniraiyn </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <style>
+        #container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+
+        .element {
+            margin-top: 10px;
+            border-radius: 8px;
+            background-size: 400px 300px;
+            max-width: 400px;
+            min-width: 200px;
+            max-height: 300px;
+            min-height: 150px;
+            box-shadow: black 1px 1px 20px 5px;
+        }
+
+        #overlay {
+            position: absolute;
+            bottom: 0rem;
+            text-align: center;
+            left: 5rem;
+        }
+
+        #duration {
+            background-color: rgba(0, 0, 0, 0.25);
+        }
+
+        #txt {
+            margin-top: 10px;
+            width: 200px;
+            text-align: center;
+        }
+
+        #start,
+        #txt,
+        #duration {
+            background-color: rgba(0, 0, 0, 0.25);
+            color: white;
+            padding: 8px;
+            outline: 0;
+            border: 0;
+            border-radius: 8px;
+        }
+
+        #txt::placeholder {
+            color: white;
+        }
+
+        #start:focus {
+            background-color: rgba(255, 255, 255, 0.5);
+            color: black;
+        }
+
+        .bar {
+            background-color: transparent;
+            height: 10px;
+            width: 150px;
+        }
+
+        .in {
+            border-radius: 8px;
+        }
+
+        a {
+            color: White;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        @keyframes fill {
+            0% {
+                width: 0%;
+            }
+
+            100% {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <video autoplay class='element'></video>
+        <img class="element" id='image' style='display:none'>
+        <div id="overlay">
+            <div id='options'>
+                <button id="start">Record</button>
+                <select id="duration">
+                    <option value="0.1">1 second</option>
+                    <option value="0.2">2 seconds</option>
+                    <option value="0.3">3 seconds</option>
+                    <option value="0.4">4 seconds</option>
+                    <option value="0.5">5 seconds</option>
+                </select><br>
+                <input id="txt" type="text" placeholder="Type your gif message briefly.">
+            </div>
+            <div class="bar">
+                <div class="in"></div>
+            </div>
+        </div>
+    </div>
+    <style id='progress'>
+
+    </style>
+    <script src="gifshot.min.js"></script>
+    <script>
+        const vgaConstraints = {
+            video: { width: { max: 400, min: 200 }, height: { max: 300, min: 150 }, facingMode: 'user', }
+        };
+
+        navigator.mediaDevices.getUserMedia(vgaConstraints).then((stream) => {
+            document.querySelector("video").srcObject = stream;
+        });
+    </script>
+    <script>
+        function record() {
+            var txt = document.querySelector('#txt').value,
+                duration = document.querySelector('#duration').value,
+                progress = document.querySelector('#progress'),
+                overlay = document.querySelector('#overlay'),
+                image = document.querySelector('#image'),
+                vid = document.querySelector('video'),
+                vidw = document.querySelector('video').getBoundingClientRect().width,
+                vidh = document.querySelector('video').getBoundingClientRect().height;
+            alert("Text : " + txt + ' Duration : ' + duration * 10 + ' seconds');
+            document.querySelector('#options').style.display = "none";
+            overlay.style.left = 0
+            document.querySelector('.bar').style = "width:" + vidw + 'px;';
+            gifshot.createGIF({
+                gifWidth: vidw,
+                gifHeight: vidh,
+                interval: duration,
+                numFrames: 10,
+                frameDuration: 1,
+                text: txt,
+                fontWeight: 'bold',
+                fontSize: '20px',
+                fontFamily: 'Arial',
+                fontColor: '#ffffff',
+                textAlign: 'center',
+                textBaseline: 'bottom',
+                sampleInterval: 10,
+                numWorkers: 2
+            }, function (obj) {
+                if (!obj.error) {
+                    image.src = obj.image;
+                    image.style = 'display:block;';
+                    vid.remove();
+                    fetch(obj.image)
+                        .then(res => res.blob())
+                        .then(blob => {
+                            document.querySelector('b').innerHTML = '<a id="save" href=' + window.URL.createObjectURL(blob) + '>save</a> / <a href="#" onclick="location.reload()">New</a>'
+                            var save = document.querySelector('#save');
+                            save.target = "_blank";
+                            if (txt == '') {
+                                save.download = 'capture.gif';
+                            } else save.download = txt + '.gif';
+                        });
+                }
+            });
+            progress.innerHTML = ".in{animation:fill " + duration * 10 + "s linear 1;height:100%;background-color:white;}"
+            setTimeout(function () {
+                progress.remove();
+                overlay.style = "left:5rem;";
+                overlay.innerHTML = "<b style='font-size:xx-large;color:white'>Encoding...</b>";
+            }, duration * 10000);
+        }
+        document.querySelector('#start').addEventListener("click", record);
+    </script>
+</body>
+
+</html>
