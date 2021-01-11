@@ -141,7 +141,7 @@
                 vid = document.querySelector('video'),
                 vidw = document.querySelector('video').getBoundingClientRect().width,
                 vidh = document.querySelector('video').getBoundingClientRect().height;
-            alert("Text : " + txt + ' Duration : ' + duration * 10 + ' seconds');
+            confirm("Click Ok to capture next " + duration * 10 + ' seconds');
             document.querySelector('#options').style.display = "none";
             overlay.style.left = 0
             document.querySelector('.bar').style = "width:" + vidw + 'px;';
@@ -169,7 +169,7 @@
                         .then(res => res.blob())
                         .then(blob => {
                             overlay.style = "top:1rem;"
-                            document.querySelector('b').innerHTML = '<a id="save" href=' + window.URL.createObjectURL(blob) + '><img src="https://rajaniraiyn.github.io/gif/res/save.svg" style="width:25px;margin-bottom:-5px;margin-right: 5px;">save</a>  |  <a href="#" onclick="location.reload()"><img src="https://rajaniraiyn.github.io/gif/rec/new.svg" style="width:40px;margin-bottom:-10px;"></a>'
+                            document.querySelector('b').innerHTML = '<a id="save" href=' + window.URL.createObjectURL(blob) + '><img src="https://rajaniraiyn.github.io/gif/res/save.svg" style="width:25px;margin-bottom:-5px;margin-right: 5px;">save</a>  |  <a href="#" onclick="location.reload()"><img src="https://rajaniraiyn.github.io/gif/res/new.svg" style="width:40px;margin-bottom:-12px;"></a>'
                             var save = document.querySelector('#save');
                             save.target = "_blank";
                             if (txt == '') {
