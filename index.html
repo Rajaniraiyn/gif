@@ -76,6 +76,10 @@
             color: White;
             font-family: Arial, Helvetica, sans-serif;
         }
+        .svg {
+            width:20px;
+            margin-bottom:-5px;
+        }
 
         @keyframes fill {
             0% {
@@ -90,12 +94,16 @@
 </head>
 
 <body>
+    <img src="https://rajaniraiyn.github.io/gif/res/gif.svg" style="width:100px;">
     <div id="container">
         <video autoplay class='element'></video>
         <img class="element" id='image' style='display:none'>
         <div id="overlay">
             <div id='options'>
-                <button id="start">Record</button>
+                <button id="start">
+                    <img src="https://rajaniraiyn.github.io/gif/res/record.svg" class="svg">
+                    Record
+                </button>
                 <select id="duration">
                     <option value="0.1">1 second</option>
                     <option value="0.2">2 seconds</option>
@@ -160,8 +168,8 @@
                     fetch(obj.image)
                         .then(res => res.blob())
                         .then(blob => {
-                            overlay.style = "top:0rem;"
-                            document.querySelector('b').innerHTML = '<a id="save" href=' + window.URL.createObjectURL(blob) + '>save</a> / <a href="#" onclick="location.reload()">New</a>'
+                            overlay.style = "top:1rem;"
+                            document.querySelector('b').innerHTML = '<a id="save" href=' + window.URL.createObjectURL(blob) + '><img src="https://rajaniraiyn.github.io/gif/res/save.svg" style="width:25px;margin-bottom:-5px;margin-right: 5px;">save</a>  |  <a href="#" onclick="location.reload()"><img src="https://rajaniraiyn.github.io/gif/rec/new.svg" style="width:40px;margin-bottom:-10px;"></a>'
                             var save = document.querySelector('#save');
                             save.target = "_blank";
                             if (txt == '') {
